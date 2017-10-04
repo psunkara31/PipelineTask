@@ -4,11 +4,14 @@
   "description": "",
   "main": "hello.js",
   "dependencies": {
-    "express": "^4.15.4"
+    "express": "^4.15.4",
+      "cfenv":"*"
   },
-  "devDependencies": {},
+  "devDependencies": {
+      
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "hello.js"
   },
   "author": "",
   "license": "ISC"

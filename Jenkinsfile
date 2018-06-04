@@ -20,8 +20,11 @@ pipeline
           {
              label 'DockerIO'
           }
-          echo "building docker image"
-          docker.build('filetestimage')
+          sh """
+          echo 'building docker image'
+          docker build -t filetestimage .
+            """
       }
+
   }
 }

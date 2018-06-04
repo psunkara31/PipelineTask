@@ -1,0 +1,23 @@
+schemaVersion: "2.0.0"
+
+
+#fileContentTests:
+
+# check that the default apt repository is set correctly
+    #- name: 'run.sh'
+    #path: '/opt/sonarqube/bin'
+    #expectedContents: ['run.sh']# this will only test the existance for files in the docker file
+    
+
+fileExistenceTests:
+
+# checking for the sonarqube installation and it's path
+  - name: 'sonarqube'
+    path: '/opt/sonarqube'
+    shouldExist: true
+    permissions: 'drwxr-xr-x'
+    
+  - name: 'sonar-javascript-plugin-2.14-build2420.jar'
+    path: '/opt/sonarqube/extensions/plugins'
+    shouldExist: true
+    permissions: 'drwxr-xr-x'

@@ -2,17 +2,29 @@ pipeline
 {
   agent none
   stages
-  {	
+  { 
     stage('git checkout')
      {
        agent 
        {
-           label 'BB-Slave'
+           label 'DockerIO'
        }
        steps{
               echo "checkout from git"
-	          checkout scm
+        checkout scm
              } 
      } 
+    stage('Docker image Build') 
+      {
+         agent
+          {
+             label 'DockerIO'
+          }
+          steps
+          {
+            echo 'building docker image'
+             docker.build('filetestimage')
+          }
+      }
   }
 }

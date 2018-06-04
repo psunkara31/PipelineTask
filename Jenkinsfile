@@ -51,10 +51,10 @@ pipeline
       }
       steps
       {
-        sh """
         echo 'pushing to bluemix registry'
-        withCredentials([string(credentialsId: 'PL_apikey', variable: 'PL_BX_API_KEY')]) {
-        sh 'bx login -a https://api.au-syd.bluemix.net --apikey ${PL_BX_API_KEY}  -o ADMNextgen -s devtest'
+        withCredentials([string(credentialsId: 'PL_apikey', variable: 'PL_BX_API_KEY')]) 
+        {
+         sh bx login -a https://api.au-syd.bluemix.net --apikey ${PL_BX_API_KEY}  -o ADMNextgen -s devtest'
       }
     }
 

@@ -60,5 +60,37 @@ pipeline
         }
       }
     }
+    stage('deploy through ucd')
+    {
+      agent
+      {
+        label 'CBS-Slave'
+      }
+      steps
+      {
+        echo 'started deploying in UCD'
+                    step([  $class: 'UCDeployPublisher',
+                    siteName: 'IBM GBS UCD',
+                    component: [
+                    $class: 'com.urbancode.jenkins.plugins.ucdeploy.VersionHelper$VersionBlock',
+                    componentName: 'Sonarqube-k8s',
+                    delivery: [
+                    $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
+                    pushVersion: '${BUILD_NUMBER}',
+                    baseDir: '${WORKSPACE}',
+                             ]
+                              ],
+                    deploy: [
+                 $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeployHelper$DeployBlock',
+                 deployApp: 'PORTAL',
+                 deployEnv: 'Dev',
+                 deployProc: 'Sonarqube',
+                 deployVersions: '${BUILD_NUMBER}',
+                 deployOnlyChanged: false
+                         ]
+                           ])
+        
+      }
+    }
  }
 }

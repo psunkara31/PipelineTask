@@ -55,6 +55,8 @@ pipeline
         withCredentials([string(credentialsId: 'PL_apikey', variable: 'PL_BX_API_KEY')]) 
         {
           sh 'bx login -a https://api.au-syd.bluemix.net --apikey ${PL_BX_API_KEY}  -o ADMNextgen -s devtest'
+          sh 'docker push registry.au-syd.bluemix.net/liberty_syd/filetest:1.0 file_tests.yaml'
+          sh 'echo image pushed to bluemix registry'
         }
       }
     }

@@ -85,7 +85,7 @@ pipeline
                  deployApp: 'PORTAL',
                  deployEnv: 'Dev',
                  deployProc: 'Sonarqube',
-                 deployVersions: 'New',
+                 deployVersions: 'jenfile',
                  deployOnlyChanged: false
                          ]
                            ])

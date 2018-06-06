@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: newsonarqube
+  labels:
+    app: newsonarqube
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: newsonarqube
+        tier: frontend
+    spec:
+      containers:
+      - image: registry.au-syd.bluemix.net/liberty_syd/sonarqube:6.1
+        name: newsonarqube
+        imagePullPolicy: Always
+      nodeSelector:
+        disktype: ssd
+        volumeMounts:
+        - name: sonarsvol
+          mountPath: "/opt/sonarqube/data"
+        ports:
+        - containerPort: 9000
+      volumes:
+      - name: sonarvol
+        persistentVolumeClaim:
+          claimName: sonarvol

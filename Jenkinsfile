@@ -77,7 +77,7 @@ pipeline
                     delivery: [
                     $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
                     pushVersion: 'new',
-                    baseDir: 'Workspace//jenfiletest',
+                    baseDir: 'workspace//jenfiletest',
                              ]
                               ],
                     deploy: [

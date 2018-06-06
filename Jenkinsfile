@@ -76,7 +76,7 @@ pipeline
                     componentName: 'Sonarqube-k8s',
                     delivery: [
                     $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
-                    pushVersion: 'new',
+                    pushVersion: 'jenfile',
                     baseDir: 'workspace//jenfiletest',
                              ]
                               ],

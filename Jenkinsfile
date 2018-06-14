@@ -79,7 +79,7 @@ pipeline
                     delivery: [
                     $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
                     pushVersion: 'winnie',
-                    baseDir: 'workspace//Project_Liberty//K8s-Infrasetup//PL_Infra//Sonarqube',
+                    baseDir: 'workspace//Project_Liberty//K8s-Infrasetup//PL_Infra//jiratest',
                              ]
                               ],
                     deploy: [

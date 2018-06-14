@@ -60,6 +60,19 @@ pipeline
         }
       }
     }
+    post('JIra update')
+    {
+      agent
+      {
+        label 'CBS-Slave'
+      }
+      steps
+      {
+        step([$class: 'hudson.plugins.jira.JiraIssueUpdater', 
+         issueSelector: [$class: 'hudson.plugins.jira.selector.DefaultIssueSelector'], 
+         scm: [$class: 'GitSCM', branches: [[name: '*/master']]
+      }
+    }
     stage('deploy through ucd')
     {
       agent

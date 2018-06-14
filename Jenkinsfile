@@ -101,6 +101,7 @@ pipeline
     success
     {
       withCredentials([string(credentialsId: 'PL_Slack', variable: 'PL_Slack')])
+      {
         slackSend channel: '#appmonitoring',
                   color: 'good',
                   teamDomain: 'projectliberty',
@@ -111,7 +112,7 @@ pipeline
              subject: "Succeeded Pipeline: ${currentBuild.fullDisplayName}",
              body: "The pipeline ${currentBuild.fullDisplayName} completed successfully"
 
-
+      }
     }
   }
 }

@@ -98,7 +98,7 @@ pipeline
 
  post {
     success {
-        slackSend channel: '#apmonitoring',
+        slackSend channel: '#appmonitoring',
                   color: 'good',
                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
 

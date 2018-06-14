@@ -61,19 +61,7 @@ pipeline
         }
       }
     }
-    stage('JIra update')
-    {
-      agent
-      {
-        label 'CBS-Slave'
-      }
-      steps
-      {
-        step([$class: 'hudson.plugins.jira.JiraIssueUpdater', 
-         issueSelector: [$class: 'hudson.plugins.jira.selector.DefaultIssueSelector'], 
-         scm: [$class: 'GitSCM', branches: [[name: '*/master']]]])
-      }
-    }
+    
     stage('deploy through ucd')
     {
       agent
@@ -90,8 +78,8 @@ pipeline
                     componentName: 'Sonarqube-k8s',
                     delivery: [
                     $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
-                    pushVersion: 'pooh',
-                    baseDir: 'workspace//jenfiletest',
+                    pushVersion: 'winnie',
+                    baseDir: 'workspace//Project_Liberty//K8s-Infrasetup//PL_Infra//Sonarqube',
                              ]
                               ],
                     deploy: [
@@ -99,7 +87,7 @@ pipeline
                  deployApp: 'PORTAL',
                  deployEnv: 'Dev',
                  deployProc: 'Sonarqube',
-                 deployVersions: 'Sonarqube-k8s:pooh',
+                 deployVersions: 'Sonarqube-k8s:winnie',
                  deployOnlyChanged: false
                          ]
                            ])
@@ -107,4 +95,18 @@ pipeline
       }
     }
  }
+
+ post {
+    success {
+        slackSend channel: '#apmonitoring',
+                  color: 'good',
+                  message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+
+        mail to: 'psunkara@in.ibm.com',
+             subject: "Succeeded Pipeline: ${currentBuild.fullDisplayName}",
+             body: "The pipeline ${currentBuild.fullDisplayName} completed successfully"
+
+
+    }
+  }
 }

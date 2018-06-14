@@ -60,7 +60,7 @@ pipeline
         }
       }
     }
-    post('JIra update')
+    stage('JIra update')
     {
       agent
       {

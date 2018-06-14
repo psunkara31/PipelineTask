@@ -78,7 +78,7 @@ pipeline
                     componentName: 'Sonarqube-k8s',
                     delivery: [
                     $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
-                    pushVersion: 'winnie5',
+                    pushVersion: 'winnie6',
                     baseDir: 'workspace//Project_Liberty//K8s-Infrasetup//PL_Infra//jiratest',
                              ]
                               ],
@@ -87,7 +87,7 @@ pipeline
                  deployApp: 'PORTAL',
                  deployEnv: 'Dev',
                  deployProc: 'Sonarqube',
-                 deployVersions: 'Sonarqube-k8s:winnie5',
+                 deployVersions: 'Sonarqube-k8s:winnie6',
                  deployOnlyChanged: false
                          ]
                            ])

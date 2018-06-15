@@ -1,7 +1,6 @@
 pipeline
 {
   agent none
-  options { skipDefaultCheckout() }
   stages
   { 
     stage('git checkout')

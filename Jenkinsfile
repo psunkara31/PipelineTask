@@ -77,7 +77,7 @@ pipeline
                     componentName: 'Sonarqube-k8s',
                     delivery: [
                     $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
-                    pushVersion: 'win3',
+                    pushVersion: 'win4',
                     baseDir: 'workspace//Project_Liberty//K8s-Infrasetup//PL_Infra//jiratest',
                              ]
                               ],
@@ -86,7 +86,7 @@ pipeline
                  deployApp: 'PORTAL',
                  deployEnv: 'Dev',
                  deployProc: 'Sonarqube',
-                 deployVersions: 'Sonarqube-k8s:win3',
+                 deployVersions: 'Sonarqube-k8s:win4',
                  deployOnlyChanged: false
                          ]
                            ])
@@ -104,7 +104,7 @@ pipeline
         slackSend channel: '#appmonitoring',
                   color: 'good',
                   teamDomain: 'projectliberty',
-                  token: '{$PL_Slack}',
+                  token: '${PL_Slack}',
                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
 
         mail to: 'psunkara@in.ibm.com',

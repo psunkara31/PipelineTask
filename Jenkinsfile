@@ -104,7 +104,7 @@ pipeline
         slackSend channel: '#appmonitoring',
                   color: 'good',
                   teamDomain: 'projectliberty',
-                  token: '$PL_Slack',
+                  token: '{$PL_Slack}',
                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
 
         mail to: 'psunkara@in.ibm.com',

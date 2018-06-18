@@ -94,7 +94,6 @@ pipeline
       }
     }
  
-      try{
             stage("update jira"){
                 agent 
                  {
@@ -105,11 +104,7 @@ pipeline
                     jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
                     currentBuild.result = 'SUCCESS'
                 }
-            }
-        } catch(Exception e) {
-            // Do something with the exception 
-            currentBuild.result = 'FAILURE'
-        }   
+            } 
   }  
  post 
   {

@@ -93,22 +93,25 @@ pipeline
         
       }
     }
-    
-    stage('Jira update')
+ stage('update jira')
     {
-      steps([$class: 'hudson.plugins.jira.JiraIssueUpdater', 
-    issueSelector: [$class: 'hudson.plugins.jira.selector.DefaultIssueSelector'], 
-    scm: [$class: 'GitSCM', branches: [[name: '*/master']], 
-        userRemoteConfigs: [[url: 'https://github.com/psunkara31/PipelineTask.git']]]])
+      try 
+      {
+  
+         def comment = "${BUILD_URL} FAILED - ${ERROR}"
+         jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
+         currentBuild.result = 'SUCCESS'
+      } 
+     catch(error) {
+                    echo "error" 
+}
 
     }
- }
- 
+  }  
  post 
   {
     success
     {
-      updateJira(${BUILD_NUMBER});
 
         mail to: 'psunkara@in.ibm.com',
              subject: "Succeeded Pipeline: ${currentBuild.fullDisplayName}",

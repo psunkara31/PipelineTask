@@ -94,19 +94,22 @@ pipeline
       }
     }
  
-      try 
-      {
-         stage('update jira')
-         {
-         def comment = "${BUILD_URL} FAILED - ${ERROR}"
-         jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
-         currentBuild.result = 'SUCCESS'
-      } 
-     catch(error) {
-                    echo "error" 
-}
-
-    }
+      try{
+            stage("update jira"){
+                agent 
+                 {
+                     label 'Slave-1'
+                 }
+                steps{
+                    def comment = "${BUILD_URL} FAILED - ${ERROR}"
+                    jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
+                    currentBuild.result = 'SUCCESS'
+                }
+            }
+        } catch(Exception e) {
+            // Do something with the exception 
+            currentBuild.result = 'FAILURE'
+        }   
   }  
  post 
   {
@@ -122,11 +125,3 @@ pipeline
   }
   
 }
-def updateJira(build) {
-    def jiraIssues = jiraIssueSelector(issueSelector: [$class: 'DefaultIssueSelector'])
-    jiraIssues.each { issue ->
-    jiraAddComment comment: "{panel:bgColor=#97FF94}{code}Code was added to address this issue in build ${build}{code} {panel}", idOrKey: issue, site: jiraServer
-    def fixedInBuild = [fields: [customfield_10121: build]] // This is a custom field named "Fixed in Build"
-        jiraEditIssue idOrKey: issue, issue: fixedInBuild
-    }
-  }

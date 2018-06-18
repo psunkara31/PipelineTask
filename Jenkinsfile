@@ -93,6 +93,15 @@ pipeline
         
       }
     }
+    
+    stage('Jira update')
+    {
+      step([$class: 'hudson.plugins.jira.JiraIssueUpdater', 
+    issueSelector: [$class: 'hudson.plugins.jira.selector.DefaultIssueSelector'], 
+    scm: [$class: 'GitSCM', branches: [[name: '*/master']], 
+        userRemoteConfigs: [[url: 'https://github.com/psunkara31/PipelineTask.git']]]])
+
+    }
  }
 
  post 

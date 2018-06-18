@@ -93,11 +93,11 @@ pipeline
         
       }
     }
- stage('update jira')
-    {
+ 
       try 
       {
-  
+         stage('update jira')
+         {
          def comment = "${BUILD_URL} FAILED - ${ERROR}"
          jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
          currentBuild.result = 'SUCCESS'

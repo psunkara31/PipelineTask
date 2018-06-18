@@ -1,14 +1,6 @@
-pipeline
+node
 {
   agent none
-  def updateJira(build) {
-    def jiraIssues = jiraIssueSelector(issueSelector: [$class: 'DefaultIssueSelector'])
-    jiraIssues.each { issue ->
-    jiraAddComment comment: "{panel:bgColor=#97FF94}{code}Code was added to address this issue in build ${build}{code} {panel}", idOrKey: issue, site: jiraServer
-    def fixedInBuild = [fields: [customfield_10121: build]] // This is a custom field named "Fixed in Build"
-        jiraEditIssue idOrKey: issue, issue: fixedInBuild
-    }
-  }
   stages
   { 
     stage('git checkout')
@@ -127,3 +119,11 @@ pipeline
   }
   
 }
+def updateJira(build) {
+    def jiraIssues = jiraIssueSelector(issueSelector: [$class: 'DefaultIssueSelector'])
+    jiraIssues.each { issue ->
+    jiraAddComment comment: "{panel:bgColor=#97FF94}{code}Code was added to address this issue in build ${build}{code} {panel}", idOrKey: issue, site: jiraServer
+    def fixedInBuild = [fields: [customfield_10121: build]] // This is a custom field named "Fixed in Build"
+        jiraEditIssue idOrKey: issue, issue: fixedInBuild
+    }
+  }

@@ -108,19 +108,21 @@ pipeline
   {
     success
     {
-      withCredentials([string(credentialsId: 'PL_Slack', variable: 'PL_Slack')])
-      {
-        slackSend channel: '#appmonitoring',
-                  color: 'good',
-                  teamDomain: 'projectliberty',
-                  token: '${PL_Slack}',
-                  message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+      updateJira(${BUILD_NUMBER});
 
         mail to: 'psunkara@in.ibm.com',
              subject: "Succeeded Pipeline: ${currentBuild.fullDisplayName}",
              body: "The pipeline ${currentBuild.fullDisplayName} completed successfully"
 
-      }
+      
+    }
+  }
+  def updateJira(build) {
+    def jiraIssues = jiraIssueSelector(issueSelector: [$class: 'DefaultIssueSelector'])
+    jiraIssues.each { issue ->
+    jiraAddComment comment: "{panel:bgColor=#97FF94}{code}Code was added to address this issue in build ${build}{code} {panel}", idOrKey: issue, site: jiraServer
+    def fixedInBuild = [fields: [customfield_10121: build]] // This is a custom field named "Fixed in Build"
+        jiraEditIssue idOrKey: issue, issue: fixedInBuild
     }
   }
 }

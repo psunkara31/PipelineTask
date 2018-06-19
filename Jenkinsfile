@@ -67,10 +67,10 @@ pipeline
                  }
                 steps{
                   script{
-                    def comment;
-                    comment = "${BUILD_URL} FAILED - ${ERROR}"
-                    jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
-                    currentBuild.result = 'SUCCESS'
+                    step([$class: 'hudson.plugins.jira.JiraIssueUpdater', 
+                    issueSelector: [$class: 'hudson.plugins.jira.selector.DefaultIssueSelector'], 
+                    scm: [$class: 'GitSCM', branches: [[name: '*/master']], 
+                    userRemoteConfigs: [[url: 'https://github.com/psunkara31/PipelineTask.git']]]]) 
                   }
                 }
             } 

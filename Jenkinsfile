@@ -14,52 +14,53 @@ pipeline
         checkout scm
              } 
      } 
-    stage('Docker image Build') 
-      {
-         agent
-          {
-             label 'DockerIO'
-          }
-          steps{
-                 sh """
-                 echo 'building docker image'
-                 docker build -t filetestimage .
-                 docker tag filetestimage registry.au-syd.bluemix.net/liberty_syd/filetest:1.0
-                 """
-                } 
-      }
-
-    stage('docker unit tests')
-    {
-      agent
-      {
-        label 'DockerIO'
-      }
-      steps{
-             sh """
-             echo 'docker unit testing step'
-             structure-test -test.v -image registry.au-syd.bluemix.net/liberty_syd/filetest:1.0 file_tests.yaml
-             """
-           }
-    } 
-
-    stage('push to bluemix registry')
-    {
-      agent
-      {
-        label 'DockerIO'
-      }
-      steps
-      {
-        echo 'pushing to bluemix registry'
-        withCredentials([string(credentialsId: 'API_KEY', variable: 'PL_BX_API_KEY')]) 
-        {
-          sh 'bx login -a https://api.au-syd.bluemix.net --apikey ${PL_BX_API_KEY}  -o ADMNextgen -s devtest'
-          sh 'docker push registry.au-syd.bluemix.net/liberty_syd/filetest:1.0'
-          sh 'echo image pushed to bluemix registry'
-        }
-      }
-    }
+   
+   // stage('push to bluemix registry')
+  //  {
+      
+   //   steps
+    //  {
+   //     echo 'pushing to bluemix registry'
+   //     withCredentials([string(credentialsId: 'API_KEY', variable: 'PL_BX_API_KEY')]) 
+   //     {
+   //       sh 'bx login -a https://api.au-syd.bluemix.net --apikey ${PL_BX_API_KEY}  -o ADMNextgen -s devtest'
+   //       sh 'docker push registry.au-syd.bluemix.net/liberty_syd/filetest:1.0'
+   //       sh 'echo image pushed to bluemix registry'
+   //     }
+   //   }
+   // }
+     stage("update jira"){
+                agent pipeline
+{
+  agent none
+  stages
+  { 
+    stage('git checkout')
+     {
+       agent 
+       {
+           label 'DockerIO'
+       }
+       steps{
+              echo "checkout from git"
+        checkout scm
+             } 
+     } 
+   
+   // stage('push to bluemix registry')
+  //  {
+      
+   //   steps
+    //  {
+   //     echo 'pushing to bluemix registry'
+   //     withCredentials([string(credentialsId: 'API_KEY', variable: 'PL_BX_API_KEY')]) 
+   //     {
+   //       sh 'bx login -a https://api.au-syd.bluemix.net --apikey ${PL_BX_API_KEY}  -o ADMNextgen -s devtest'
+   //       sh 'docker push registry.au-syd.bluemix.net/liberty_syd/filetest:1.0'
+   //       sh 'echo image pushed to bluemix registry'
+   //     }
+   //   }
+   // }
      stage("update jira"){
                 agent 
                  {
@@ -69,8 +70,37 @@ pipeline
                   script{
                     step([$class: 'hudson.plugins.jira.JiraIssueUpdater', 
                     issueSelector: [$class: 'hudson.plugins.jira.selector.DefaultIssueSelector']])
-               //     scm: [$class: 'GitSCM', branches: [[name: '*/master']], 
-                 //   userRemoteConfigs: [[url: 'https://github.com/psunkara31/PipelineTask.git']]]]) 
+                    scm: [$class: 'GitSCM', branches: [[name: '*/master']], 
+                     userRemoteConfigs: [[url: 'https://github.com/psunkara31/PipelineTask.git']]]]) 
+                  }
+                }
+            } 
+  } 
+
+  post
+  {
+    success {
+        withCredentials([string(credentialsId: 'PL_Slack', variable: 'pl_slack')]) 
+   //     {
+        slackSend channel: '#appmonitoring',
+                  color: 'good',
+                  teamDomain: 'projectliberty',
+                  token: 'pl_slack',
+                  message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
+
+           }
+   } 
+  }
+}
+                 {
+                     label 'Slave-1'
+                 }
+                steps{
+                  script{
+                    step([$class: 'hudson.plugins.jira.JiraIssueUpdater', 
+                    issueSelector: [$class: 'hudson.plugins.jira.selector.DefaultIssueSelector']])
+                    scm: [$class: 'GitSCM', branches: [[name: '*/master']], 
+                     userRemoteConfigs: [[url: 'https://github.com/psunkara31/PipelineTask.git']]]]) 
                   }
                 }
             } 

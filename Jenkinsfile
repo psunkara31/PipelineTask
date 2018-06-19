@@ -48,15 +48,14 @@ pipeline
   post
   {
     success {
-        withCredentials([string(credentialsId: 'PL_Slack', variable: 'pl_slack')]) 
-       {
+       
         slackSend channel: '#appmonitoring',
                   color: 'good',
                   teamDomain: 'projectliberty',
-                  token: 'pl_slack',
+                 // token: 'pl_slack',
                   message: "The pipeline ${currentBuild.fullDisplayName} completed successfully."
 
            }
-   } 
+   
   }
 }

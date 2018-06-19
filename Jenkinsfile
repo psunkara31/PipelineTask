@@ -100,9 +100,11 @@ pipeline
                      label 'Slave-1'
                  }
                 steps{
+                  script{
                     def comment = "${BUILD_URL} FAILED - ${ERROR}"
                     jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
                     currentBuild.result = 'SUCCESS'
+                  }
                 }
             } 
   }  

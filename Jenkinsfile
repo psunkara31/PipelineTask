@@ -60,6 +60,20 @@ pipeline
         }
       }
     }
+     stage("update jira"){
+                agent 
+                 {
+                     label 'Slave-1'
+                 }
+                steps{
+                  script{
+                    def comment = "${BUILD_URL} FAILED - ${ERROR}"
+                    jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
+                    currentBuild.result = 'SUCCESS'
+                  }
+                }
+            } 
+  }  
     
     stage('deploy through ucd')
     {
@@ -94,20 +108,7 @@ pipeline
       }
     }
  
-            stage("update jira"){
-                agent 
-                 {
-                     label 'Slave-1'
-                 }
-                steps{
-                  script{
-                    def comment = "${BUILD_URL} FAILED - ${ERROR}"
-                    jiraAddComment idOrKey: 'GENERIC-999', comment: comment, site: 'YOURJIRASITE'
-                    currentBuild.result = 'SUCCESS'
-                  }
-                }
-            } 
-  }  
+           
  post 
   {
     success

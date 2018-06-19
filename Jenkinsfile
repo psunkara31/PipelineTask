@@ -74,52 +74,5 @@ pipeline
                 }
             } 
   }  
-    
-    stage('deploy through ucd')
-    {
-      agent
-      {
-        label 'CBS-Slave'
-      }
-      steps
-      {
-        echo 'started deploying in UCD'
-                    step([  $class: 'UCDeployPublisher',
-                    siteName: 'IBM GBS UCD',
-                    component: [
-                    $class: 'com.urbancode.jenkins.plugins.ucdeploy.VersionHelper$VersionBlock',
-                    componentName: 'Sonarqube-k8s',
-                    delivery: [
-                    $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeliveryHelper$Push',
-                    pushVersion: 'win5',
-                    baseDir: 'workspace//Project_Liberty//K8s-Infrasetup//PL_Infra//jiratest',
-                             ]
-                              ],
-                    deploy: [
-                 $class: 'com.urbancode.jenkins.plugins.ucdeploy.DeployHelper$DeployBlock',
-                 deployApp: 'PORTAL',
-                 deployEnv: 'Dev',
-                 deployProc: 'Sonarqube',
-                 deployVersions: 'Sonarqube-k8s:win5',
-                 deployOnlyChanged: false
-                         ]
-                           ])
-        
-      }
-    }
- 
-           
- post 
-  {
-    success
-    {
-
-        mail to: 'psunkara@in.ibm.com',
-             subject: "Succeeded Pipeline: ${currentBuild.fullDisplayName}",
-             body: "The pipeline ${currentBuild.fullDisplayName} completed successfully"
-
-      
-    }
-  }
   
 }

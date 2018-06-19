@@ -49,7 +49,7 @@ pipeline
   {
     success {
         withCredentials([string(credentialsId: 'PL_Slack', variable: 'pl_slack')]) 
-   //     {
+       {
         slackSend channel: '#appmonitoring',
                   color: 'good',
                   teamDomain: 'projectliberty',
